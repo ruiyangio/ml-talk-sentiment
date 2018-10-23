@@ -1,1 +1,1 @@
-# ml-talk-sentiment
+# Talk PPT for sentiment analysis

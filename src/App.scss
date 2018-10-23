@@ -1,0 +1,31 @@
+@import 'colors';
+
+.demo {
+  @media screen and (max-width: 1300px) {
+    section {
+      font-size: 2vw;
+    }
+  }
+
+  &.reveal {
+    position: absolute;
+
+    img.demo-img__quarter {
+      width: 35%;
+      height: 35%;
+    }
+  }
+
+  .demo-chart {
+    background: $white;
+
+    &.demo-chart__half {
+      width: 50%;
+    }
+
+    &.demo-chart__center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
