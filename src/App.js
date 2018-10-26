@@ -49,7 +49,7 @@ const logitModel = 'h_theta(x) = g(Xtheta) = 1/(1+e^(-Xtheta))';
 const linearRegression = 'y = Xbeta, yinRR';
 const generalizedModel = 'E(Y|X)=f(X,beta)=mu=g^-1(Xbeta)';
 const linkFunction = 'Xbeta = g(mu)';
-const sentExample = 'P(positive|F) = p, P(negative|F) = 1 - p';
+const sentExample = 'P(positive|F) = p, P("negative"|F) = 1 - p';
 const logOdds = 'ln(p/(1-p)) = Xtheta';
 const sigmoid = 'S(x) = e^x / (e^x + 1) = 1 / (1 + e^-x)';
 const sigmoidPdfInt =
