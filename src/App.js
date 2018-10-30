@@ -42,14 +42,14 @@ const ngramModelJoint =
   'P(w_1|w_2, w_3, ..., w_n, C_k)*P(w_2|w_3, ..., w_n, C_k)*...*P(w_n|C_k)*P(C_k)';
 const ngramModel = ' = P(w_1|w_2, C_k)*P(w_2|w_3, C_k)*...*P(w_n|C_k)*P(C_k)';
 const tf = 'tf(t,d) = log(1 + f_(t,d))';
-const idf = 'idf(t,D) = log(|D|/ |{d in D: t in d}| + alpha)';
+const idf = 'idf(t,D) = log(|D|/ |{d in D: t in d}| + 1)';
 const regression = 'y~~f(X,beta)';
 const conditionalExpectation = 'E(Y|X) = f(X,beta)';
 const logitModel = 'h_theta(x) = g(Xtheta) = 1/(1+e^(-Xtheta))';
 const linearRegression = 'y = Xbeta, yinRR';
 const generalizedModel = 'E(Y|X)=f(X,beta)=mu=g^-1(Xbeta)';
 const linkFunction = 'Xbeta = g(mu)';
-const sentExample = 'P(positive|F) = p, P("negative"|F) = 1 - p';
+const sentExample = 'P(positive|X) = p, P("negative"|X) = 1 - p';
 const logOdds = 'ln(p/(1-p)) = Xtheta';
 const sigmoid = 'S(x) = e^x / (e^x + 1) = 1 / (1 + e^-x)';
 const sigmoidPdfInt =
@@ -167,6 +167,9 @@ class App extends Component {
             <h3>And application on Sentiment Analysis</h3>
           </section>
           <section>
+            <header>
+              <h2>Agenda</h2>
+            </header>
             <div className="demo-text-block">Naive Bayes</div>
             <MathJax.Context input="ascii" script={MATHJAX_CDN_URL}>
               <div className="demo-text-block--math">
@@ -338,6 +341,53 @@ class App extends Component {
                 <img src={mrImage} alt="MR" />
               </div>
               <div>81% accuracy using IMDB review data</div>
+            </section>
+            <section>
+              <h5>
+                <strong>Sklearn Implementation</strong>
+              </h5>
+              <SyntaxHighlighter
+                language="python"
+                style={monokaiSublime}
+                wrapLines={true}
+              >
+                {`
+                    x =
+                      [
+                        [1,2,3,4],
+                        [5,6,7,8],
+                        [2,3,4,4]
+                      ]
+                    y = [1,0,1]
+                    y = binary_transform(y)
+                    # [[0. 1.]
+                    #  [1. 0.]
+                    #  [0. 1.]]
+                    feature_count = [
+                        [0, 0, 0, 0],
+                        [0, 0, 0, 0]
+                    ]
+                    class_count = [0, 0]
+                    feature_count += y.T * x
+                    #  [[5. 6. 7. 8.]
+                    #  [3. 5. 7. 8.]]
+                    class_count += y.sum(axis=0) # sum along column
+                    # [1. 2.]
+                    smoothed_feature_count = feature_count + 1
+                    smoothed_class_count = smoothed_feature_count.sum(axis=1) # sum along row
+                    # [[6. 7. 8. 9.]
+                    #  [4. 6. 8. 9.]]
+                    # [30. 27.]
+                    feature_log_prob_ = log(smoothed_feature_count)-log(smoothed_class_count)
+                    # [[-1.60943791 -1.45528723 -1.32175584 -1.2039728 ]
+                    #  [-1.9095425  -1.5040774  -1.21639532 -1.09861229]]
+                    class_log_prior = log(class_count)-log(class_count.sum())
+                    # [-1.09861229 -0.40546511]
+                    new_case = [2,3,4,5]
+                    log_prob = new_case * feature_log_prob_.T + class_log_prior
+                    # [-19.99023719 -19.09542505]
+                    `}
+              </SyntaxHighlighter>
             </section>
           </section>
           <section>
@@ -738,12 +788,14 @@ class App extends Component {
             </section>
           </section>
           <section>
-            <div>Sentiment Analysis results</div>
+            <header>
+              <h2>Sentiment Analysis results</h2>
+            </header>
             <div>
               <C3Chart {...accuracyChart} />
             </div>
             <br />
-            <div style={{ 'font-size': '1.2vw' }}>
+            <div style={{ fontSize: '1.2vw' }}>
               <div>
                 Training accuracy and speed on the whole data set(IMDB +
                 Twitter)
